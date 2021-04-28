@@ -13,6 +13,10 @@ class Node
     @data
   end
 
+  def set_data(value)
+    @data = value
+  end
+
   def get_left
     @left
   end
@@ -90,7 +94,46 @@ class Tree
     root
   end
 
-  def delete
+  def delete(root, key)
+    return root if root.nil?
+
+    if root.data < key
+      root.set_right(delete(root.get_right, key))
+    elsif root.data > key
+      root.set_left(delete(root.get_left, key))
+    else
+      if root.get_left.nil?
+        tmp = root.get_right
+        root = nil
+        return tmp
+      elsif root.get_right.nil?
+        tmp = root.get_left
+        root = nil
+        return tmp
+      end
+
+      successor_parent = root
+      successor = root.get_right
+      while successor.get_left
+        successor_parent = successor
+        successor = successor.get_left
+      end
+
+      if successor_parent != root
+        successor_parent.set_left(successor.get_right)
+      else
+        successor_parent.set_right(successor.get_right)
+      end
+      root.set_data(successor.data)
+    end
+    root
+  end
+
+  def min_value(root)
+    until root.get_left.nil?
+      root = root.get_left
+    end
+    root
   end
 
   def find(root, key)
@@ -140,8 +183,8 @@ class Tree
   end
 end
 
-test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-
+# test array, unordered, with duplicates
+test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 5, 7, 9, 67, 6345, 324]
 bst = Tree.new(test_array)
 bst.build_tree
 
@@ -155,6 +198,10 @@ bst.build_tree
 #   Right child data: #{found_node.get_right.data if found_node.get_right}"
 
 # insert + draw tree
-to_insert = 0
-bst.insert(bst.root, to_insert)
+# to_insert = 0
+# bst.insert(bst.root, to_insert)
+# bst.pretty_print
+
+# delete
+bst.delete(bst.root, 8)
 bst.pretty_print
