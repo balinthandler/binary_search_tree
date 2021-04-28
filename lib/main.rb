@@ -77,7 +77,17 @@ class Tree
     return result + right if left.empty?
   end
 
-  def insert
+  def insert(root, key)
+    return Node.new(key) if root.nil? 
+
+    if root.data == key
+      root
+    elsif root.data < key
+      root.set_right(insert(root.get_right, key))
+    else
+      root.set_left(insert(root.get_left, key))
+    end
+    root
   end
 
   def delete
@@ -134,13 +144,17 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 bst = Tree.new(test_array)
 bst.build_tree
-bst.pretty_print
 
 # find
-to_find = 7
-found_node = bst.find(bst.root, to_find) 
-puts "Searched for node data: #{to_find}
-  Found node: #{found_node},   
-  Data: #{found_node.data}, 
-  Left child data: #{found_node.get_left.data if found_node.get_left}, 
-  Right child data: #{found_node.get_right.data if found_node.get_right}"
+# to_find = 7
+# found_node = bst.find(bst.root, to_find) 
+# puts "Searched for node data: #{to_find}
+#   Found node: #{found_node},
+#   Data: #{found_node.data},
+#   Left child data: #{found_node.get_left.data if found_node.get_left}, 
+#   Right child data: #{found_node.get_right.data if found_node.get_right}"
+
+# insert + draw tree
+to_insert = 0
+bst.insert(bst.root, to_insert)
+bst.pretty_print
