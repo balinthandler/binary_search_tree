@@ -152,23 +152,22 @@ class Tree
 
   def level_order_iterative(root)
     return if root.nil?
-
+    result = []
     q = []
     q.push(root)
 
     puts "Level order traversal:"
     while !q.empty?
       current = q[0]
-      print "#{current.data}"
+      result.push current.data
       q.push(current.get_left) if current.get_left != nil
       q.push(current.get_right) if current.get_right != nil
-      if q.length > 1 
-        print ", "
-      else
-        print ".\n"
-      end
       q.shift
     end
+    result
+  end
+
+  def level_order_recursive(root)
   end
 
   def inorder
@@ -226,4 +225,4 @@ bst.build_tree
 
 # level order traversal
 bst.pretty_print
-bst.level_order_iterative(bst.root)
+p bst.level_order_iterative(bst.root)
