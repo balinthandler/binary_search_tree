@@ -73,8 +73,8 @@ class Tree
         right.slice!(0)
       end
     end
-    return result += left if right.empty?
-    return result += right if left.empty?
+    return result + left if right.empty?
+    return result + right if left.empty?
   end
 
   def insert
@@ -83,7 +83,18 @@ class Tree
   def delete
   end
 
-  def find
+  def find(root, key)
+    return root if root.nil? || root.data == key
+
+    if root.data < key
+      find(root.get_right, key)
+    else
+      find(root.get_left, key)
+    end
+  end
+
+  def root
+    @root
   end
 
   def level_order
@@ -124,3 +135,12 @@ test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 bst = Tree.new(test_array)
 bst.build_tree
 bst.pretty_print
+
+# find
+to_find = 7
+found_node = bst.find(bst.root, to_find) 
+puts "Searched for node data: #{to_find}
+  Found node: #{found_node},   
+  Data: #{found_node.data}, 
+  Left child data: #{found_node.get_left.data if found_node.get_left}, 
+  Right child data: #{found_node.get_right.data if found_node.get_right}"
