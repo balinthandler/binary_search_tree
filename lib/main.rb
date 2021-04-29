@@ -165,8 +165,16 @@ class Tree
     result
   end
 
-  def level_order_recursive(root)
+  def level_order_recursive(node, q = [], result = [])
+    result << node.data
+    q << node.get_left unless node.get_left.nil?
+    q << node.get_right unless node.get_right.nil?
+    return if q.empty?
+
+    level_order_recursive(q.shift, q, result)
+    result
   end
+
 
   def inorder(root, result = [])
     return if root.nil?
@@ -236,6 +244,7 @@ class Tree
     end
 
     return true if diff < 2
+
     false
   end
 
@@ -253,92 +262,72 @@ class Tree
   end
 end
 
-# test array, unordered, with duplicates
-test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 5, 7, 9, 67, 6345, 324, 64, 23, 88, 47, 104, 301, 777, 37, 43]
-# test_array = Array.new(30) {rand(1..100)}
-bst = Tree.new
-bst.build_tree(test_array)
-bst.pretty_print
+def driver_script
+  test_array = Array.new(15) {rand(1..100)}
+  bst = Tree.new
+  bst.build_tree(test_array)
+  bst.pretty_print
 
-# find
-to_find = 67
-found_node = bst.find(bst.root, to_find)
-puts "Searched for node data: #{to_find}
-  Found node: #{found_node},
-  Data: #{found_node.data},
-  Left child data: #{found_node.get_left.data if found_node.get_left}, 
-  Right child data: #{found_node.get_right.data if found_node.get_right}"
-puts
+  puts "Is the node tree balanced?"
+  puts bst.balanced?
+  puts
 
-# insert + draw new tree
-puts "Inserting 6 and 50"
-to_insert = 50
-bst.insert(bst.root, to_insert)
-to_insert = 6
-bst.insert(bst.root, to_insert)
-bst.pretty_print
-puts
+  puts "Level order traversal:"
+  p bst.level_order_recursive(bst.root)
+  puts
 
-# delete + redraw tree
-puts "Delete 8"
-bst.delete(bst.root, 8)
-bst.pretty_print
-puts
+  puts "Preorder Traversal:"
+  p bst.preorder(bst.root)
+  puts
 
-# level order traversal
-puts "Level order traversal:"
-p bst.level_order_iterative(bst.root)
-puts
+  puts "Inorder Traversal:"
+  p bst.inorder(bst.root)
+  puts
 
-# preorder traversal
-puts "Preorder Traversal:"
-p bst.preorder(bst.root)
-puts
+  puts "Postorder Traversal:"
+  p bst.postorder(bst.root)
+  puts
 
-# indorder traversal
-puts "Inorder Traversal:"
-p bst.inorder(bst.root)
-puts
+  puts "Unbalance tree with insertion of new nodes"
+  to_insert = 150
+  bst.insert(bst.root, to_insert)
+  to_insert = 130
+  bst.insert(bst.root, to_insert)
+  to_insert = 110
+  bst.insert(bst.root, to_insert)
+  to_insert = 120
+  bst.insert(bst.root, to_insert)
+  to_insert = 140
+  bst.insert(bst.root, to_insert)
+  bst.pretty_print
 
-# postorder traversal
-puts "Postorder Traversal:"
-p bst.postorder(bst.root)
-puts
+  puts "Is the node tree balanced?"
+  puts bst.balanced?
+  puts
 
-# height of a particular node
-# level distance between node and furthest leaf node
-height_of = 9
-puts "Height of node #{height_of}:"
-puts bst.height(height_of)
-puts
+  puts "Rebalance tree"
+  bst.rebalance
+  bst.pretty_print
 
-# depth of a node
-# level distance between node and root node
-depth_of = 50
-puts "Depth of node #{depth_of}:"
-puts bst.depth(depth_of)
-puts
+  puts "Is the node tree balanced?"
+  puts bst.balanced?
+  puts
 
-# balanced?
-puts "Is the node tree balanced?"
-puts bst.balanced?
-puts
+  puts "Level order traversal:"
+  p bst.level_order_iterative(bst.root)
+  puts
 
+  puts "Preorder Traversal:"
+  p bst.preorder(bst.root)
+  puts
 
-puts "Unbalance tree with new nodes"
-# unbalance tree with insertion
-to_insert = 10000
-bst.insert(bst.root, to_insert)
-to_insert = 10003
-bst.insert(bst.root, to_insert)
-to_insert = 10004
-bst.insert(bst.root, to_insert)
-to_insert = 10005
-bst.insert(bst.root, to_insert)
-to_insert = 10007
-bst.insert(bst.root, to_insert)
+  puts "Inorder Traversal:"
+  p bst.inorder(bst.root)
+  puts
 
-puts "Rebalance tree"
-bst.rebalance
-bst.pretty_print
+  puts "Postorder Traversal:"
+  p bst.postorder(bst.root)
+  puts
+end
 
+driver_script
