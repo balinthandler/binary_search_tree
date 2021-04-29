@@ -173,7 +173,13 @@ class Tree
   def inorder
   end
 
-  def preorder
+  def preorder(root, result = [])
+    return if root.nil?
+
+    result << root.data
+    preorder(root.get_left, result)
+    preorder(root.get_right, result)
+    result
   end
 
   def postorder
@@ -207,7 +213,7 @@ bst.build_tree
 
 # find
 # to_find = 7
-# found_node = bst.find(bst.root, to_find) 
+# found_node = bst.find(bst.root, to_find)
 # puts "Searched for node data: #{to_find}
 #   Found node: #{found_node},
 #   Data: #{found_node.data},
@@ -224,5 +230,10 @@ bst.build_tree
 # bst.pretty_print
 
 # level order traversal
+# bst.pretty_print
+# p bst.level_order_iterative(bst.root)
+
+# preorder traversal
 bst.pretty_print
-p bst.level_order_iterative(bst.root)
+p bst.preorder(bst.root)
+
