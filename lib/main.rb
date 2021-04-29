@@ -156,7 +156,6 @@ class Tree
     q = []
     q.push(root)
 
-    puts "Level order traversal:"
     while !q.empty?
       current = q[0]
       result.push current.data
@@ -188,7 +187,12 @@ class Tree
     result
   end
 
-  def postorder
+  def postorder(root, result = [])
+    return if root.nil?
+
+    postorder(root.get_left, result)
+    postorder(root.get_right, result)
+    result << root.data
   end
 
   def height
@@ -216,33 +220,49 @@ end
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 5, 7, 9, 67, 6345, 324]
 bst = Tree.new(test_array)
 bst.build_tree
+bst.pretty_print
 
 # find
-# to_find = 7
-# found_node = bst.find(bst.root, to_find)
-# puts "Searched for node data: #{to_find}
-#   Found node: #{found_node},
-#   Data: #{found_node.data},
-#   Left child data: #{found_node.get_left.data if found_node.get_left}, 
-#   Right child data: #{found_node.get_right.data if found_node.get_right}"
+to_find = 67
+found_node = bst.find(bst.root, to_find)
+puts "Searched for node data: #{to_find}
+  Found node: #{found_node},
+  Data: #{found_node.data},
+  Left child data: #{found_node.get_left.data if found_node.get_left}, 
+  Right child data: #{found_node.get_right.data if found_node.get_right}"
+puts
 
-# insert + draw tree
-# to_insert = 0
-# bst.insert(bst.root, to_insert)
-# bst.pretty_print
+# insert + draw new tree
+puts "Inserting 6 and 50"
+to_insert = 50
+bst.insert(bst.root, to_insert)
+to_insert = 6
+bst.insert(bst.root, to_insert)
+bst.pretty_print
+puts
 
-# delete
-# bst.delete(bst.root, 8)
-# bst.pretty_print
+# delete + redraw tree
+puts "Delete 8"
+bst.delete(bst.root, 8)
+bst.pretty_print
+puts
 
 # level order traversal
-# bst.pretty_print
-# p bst.level_order_iterative(bst.root)
+puts "Level order traversal:"
+p bst.level_order_iterative(bst.root)
+puts
 
 # preorder traversal
-# bst.pretty_print
-# p bst.preorder(bst.root)
+puts "Preorder Traversal:"
+p bst.preorder(bst.root)
+puts
 
 # indorder traversal
+puts "Inorder Traversal:"
 p bst.inorder(bst.root)
+puts
 
+# postorder traversal
+puts "Postorder Traversal:"
+p bst.postorder(bst.root)
+puts
