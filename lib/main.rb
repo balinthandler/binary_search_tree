@@ -170,7 +170,13 @@ class Tree
   def level_order_recursive(root)
   end
 
-  def inorder
+  def inorder(root, result = [])
+    return if root.nil?
+
+    inorder(root.get_left, result)
+    result << root.data
+    inorder(root.get_right, result)
+    result
   end
 
   def preorder(root, result = [])
@@ -234,6 +240,9 @@ bst.build_tree
 # p bst.level_order_iterative(bst.root)
 
 # preorder traversal
-bst.pretty_print
-p bst.preorder(bst.root)
+# bst.pretty_print
+# p bst.preorder(bst.root)
+
+# indorder traversal
+p bst.inorder(bst.root)
 
