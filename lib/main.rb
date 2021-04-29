@@ -227,6 +227,17 @@ class Tree
   end
 
   def balanced?
+    left_height = height(@root.get_left.data)
+    right_height = height(@root.get_right.data)
+
+    if left_height > right_height
+      diff = left_height - right_height
+    else
+      diff = right_height - left_height
+    end
+
+    return true if diff < 2
+    false
   end
 
   def rebalance
@@ -298,10 +309,28 @@ puts
 height_of = 9
 puts "Height of node #{height_of}:"
 puts bst.height(height_of)
+puts
 
 # depth of a node
 # level distance between node and root node
 depth_of = 50
 puts "Depth of node #{depth_of}:"
 puts bst.depth(depth_of)
+puts
+# unbalance tree with insertion
+# to_insert = 100000
+# bst.insert(bst.root, to_insert)
+# to_insert = 1000003
+# bst.insert(bst.root, to_insert)
+# to_insert = 1000000
+# bst.insert(bst.root, to_insert)
+# to_insert = 10000
+# bst.insert(bst.root, to_insert)
+# to_insert = 1000
+# bst.insert(bst.root, to_insert)
+# bst.pretty_print
 
+# balanced?
+puts "Is the node tree balanced?"
+puts bst.balanced?
+puts
