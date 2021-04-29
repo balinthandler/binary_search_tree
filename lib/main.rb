@@ -36,15 +36,14 @@ end
 
 # Tree class for Binary Search Tree
 class Tree
-  def initialize(array)
-    @array = array
+  def initialize
     @root = nil
   end
 
-  def build_tree
-    return puts "There is nothing to sort - Empty Array" if @array.empty?
+  def build_tree(array)
+    return puts "There is nothing to sort - Empty Array" if array.empty?
 
-    sorted = merge_sort(@array.uniq)
+    sorted = merge_sort(array.uniq)
     @root = node_builder(sorted, 0, sorted.length - 1)
   end
 
@@ -241,6 +240,8 @@ class Tree
   end
 
   def rebalance
+    array = level_order_iterative(@root)
+    build_tree(array)
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -255,8 +256,8 @@ end
 # test array, unordered, with duplicates
 test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 5, 7, 9, 67, 6345, 324, 64, 23, 88, 47, 104, 301, 777, 37, 43]
 # test_array = Array.new(30) {rand(1..100)}
-bst = Tree.new(test_array)
-bst.build_tree
+bst = Tree.new
+bst.build_tree(test_array)
 bst.pretty_print
 
 # find
@@ -317,20 +318,27 @@ depth_of = 50
 puts "Depth of node #{depth_of}:"
 puts bst.depth(depth_of)
 puts
-# unbalance tree with insertion
-# to_insert = 100000
-# bst.insert(bst.root, to_insert)
-# to_insert = 1000003
-# bst.insert(bst.root, to_insert)
-# to_insert = 1000000
-# bst.insert(bst.root, to_insert)
-# to_insert = 10000
-# bst.insert(bst.root, to_insert)
-# to_insert = 1000
-# bst.insert(bst.root, to_insert)
-# bst.pretty_print
 
 # balanced?
 puts "Is the node tree balanced?"
 puts bst.balanced?
 puts
+
+
+puts "Unbalance tree with new nodes"
+# unbalance tree with insertion
+to_insert = 10000
+bst.insert(bst.root, to_insert)
+to_insert = 10003
+bst.insert(bst.root, to_insert)
+to_insert = 10004
+bst.insert(bst.root, to_insert)
+to_insert = 10005
+bst.insert(bst.root, to_insert)
+to_insert = 10007
+bst.insert(bst.root, to_insert)
+
+puts "Rebalance tree"
+bst.rebalance
+bst.pretty_print
+
