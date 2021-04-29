@@ -195,7 +195,21 @@ class Tree
     result << root.data
   end
 
-  def height
+  def height(node_to_find)
+    node = find(@root,node_to_find)
+    measure_height(node)
+  end
+
+  def measure_height(root)
+    return -1 if root.nil?
+
+    l_height = measure_height(root.get_left)
+    r_height = measure_height(root.get_right)
+    if l_height > r_height
+      l_height + 1
+    else
+      r_height + 1
+    end
   end
 
   def depth
@@ -217,7 +231,8 @@ class Tree
 end
 
 # test array, unordered, with duplicates
-test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 5, 7, 9, 67, 6345, 324]
+test_array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 5, 7, 9, 67, 6345, 324, 64, 23, 88, 47, 104, 301, 777, 37, 43]
+# test_array = Array.new(30) {rand(1..100)}
 bst = Tree.new(test_array)
 bst.build_tree
 bst.pretty_print
@@ -266,3 +281,9 @@ puts
 puts "Postorder Traversal:"
 p bst.postorder(bst.root)
 puts
+
+# height of a particular node
+# longest path from a given node to a leaf node
+height = 9
+puts "Height of node #{height}:"
+puts bst.height(height)
