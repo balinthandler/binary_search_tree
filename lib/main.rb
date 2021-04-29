@@ -201,7 +201,7 @@ class Tree
   end
 
   def measure_height(root)
-    return -1 if root.nil?
+    return 0 if root.nil?
 
     l_height = measure_height(root.get_left)
     r_height = measure_height(root.get_right)
@@ -212,7 +212,18 @@ class Tree
     end
   end
 
-  def depth
+  def depth(data_to_find)
+    measure_depth(@root, data_to_find)
+  end
+
+  def measure_depth(root, data_to_find, level = 1)
+    return 0 if root.nil?
+    return level if root.data == data_to_find
+
+    step = measure_depth(root.get_left, data_to_find, level + 1)
+    return step if step != 0 
+    step = measure_depth(root.get_right, data_to_find, level + 1)
+    step
   end
 
   def balanced?
@@ -283,7 +294,14 @@ p bst.postorder(bst.root)
 puts
 
 # height of a particular node
-# longest path from a given node to a leaf node
-height = 9
-puts "Height of node #{height}:"
-puts bst.height(height)
+# level distance between node and furthest leaf node
+height_of = 9
+puts "Height of node #{height_of}:"
+puts bst.height(height_of)
+
+# depth of a node
+# level distance between node and root node
+depth_of = 50
+puts "Depth of node #{depth_of}:"
+puts bst.depth(depth_of)
+
